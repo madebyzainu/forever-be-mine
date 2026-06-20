@@ -12,38 +12,47 @@ body {
     margin: 0;
     height: 100vh;
     overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: #ffe6ea;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
-    background: #ffe6ea;
 }
 
-/* QUESTION AREA */
-#questionScreen {
+.screen {
     text-align: center;
 }
 
 h1 {
     font-size: 24px;
     color: #333;
-    margin-bottom: 20px;
 }
 
-/* BUTTON LAYOUT (SIDE BY SIDE) */
-#buttonContainer {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+    margin-top: 10px;
 }
 
-/* BUTTON STYLE */
 button {
     padding: 12px 18px;
     font-size: 18px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    margin-top: 10px;
+}
+
+#submitCode, #nextBtn {
+    background: #ff4d6d;
+    color: white;
+}
+
+#buttonContainer {
+    display: inline-flex;
+    gap: 15px;
 }
 
 #yesBtn {
@@ -51,15 +60,17 @@ button {
     color: white;
 }
 
-/* NO BUTTON FLOATING */
 #noBtn {
     background: #999;
     color: white;
-    position: absolute;
-    transition: 0.15s ease;
 }
 
-/* MESSAGE BOX */
+/* floating no button */
+.floating {
+    position: fixed !important;
+}
+
+/* MESSAGE BOX (IMPORTANT FIX: CLICK STILL WORKS UNDER IT) */
 #msgBox {
     position: fixed;
     bottom: 20px;
@@ -74,6 +85,7 @@ button {
     text-align: center;
     z-index: 999;
     font-size: 16px;
+    pointer-events: none; /* 🔥 FIX: does NOT block clicking */
 }
 
 /* LOVE SCREEN */
@@ -83,34 +95,67 @@ button {
     font-size: 26px;
     color: #333;
 }
+
+#error {
+    color: red;
+    margin-top: 10px;
+    display: none;
+}
 </style>
 </head>
 
 <body>
 
-<div id="questionScreen">
+<!-- 🔐 CODE SCREEN -->
+<div id="codeScreen" class="screen">
+    <h1>Enter Code 🔐</h1>
+    <input type="text" id="codeInput" placeholder="Enter code">
+    <br>
+    <button id="submitCode">Submit</button>
+    <div id="error">Wrong code 😞, try again</div>
+</div>
 
+<!-- 🟣 INTRO -->
+<div id="introScreen" class="screen" style="display:none;">
+    <h1>Welcome Ayesha 👀<br>May you will like this 🫶🏻</h1>
+    <button id="nextBtn">Next ⏭️</button>
+</div>
+
+<!-- ❤️ MAIN -->
+<div id="questionScreen" class="screen" style="display:none;">
     <h1>Will you forever be mine Ayeshay? 👀</h1>
 
     <div id="buttonContainer">
         <button id="yesBtn">Yes ❤️‍🩹</button>
         <button id="noBtn">No 😒</button>
     </div>
-
 </div>
 
+<!-- MESSAGE -->
 <div id="msgBox"></div>
 
+<!-- LOVE -->
 <div id="loveMessage">
-    I knew it 😭💖<br>
-    I love you too 🫶🏻💗
+    I knew it 😭🫶🏻<br><br>
+    Love you 😭💋
 </div>
 
 <script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const msgBox = document.getElementById("msgBox");
+
+const codeScreen = document.getElementById("codeScreen");
+const introScreen = document.getElementById("introScreen");
 const questionScreen = document.getElementById("questionScreen");
+
+const codeInput = document.getElementById("codeInput");
+const submitCode = document.getElementById("submitCode");
+const error = document.getElementById("error");
+
+const nextBtn = document.getElementById("nextBtn");
+
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+const msgBox = document.getElementById("msgBox");
 const loveMessage = document.getElementById("loveMessage");
 
 const messages = [
@@ -127,22 +172,35 @@ const messages = [
 let count = 0;
 let msgTimeout = null;
 
-/* INITIAL POSITION */
-window.onload = function () {
-    moveNoButton();
-};
+/* CODE */
+submitCode.addEventListener("click", function () {
+    if (codeInput.value === "CODE50") {
+        codeScreen.style.display = "none";
+        introScreen.style.display = "block";
+    } else {
+        error.style.display = "block";
+    }
+});
 
-/* =========================
-   NO BUTTON CLICK LOGIC
-========================= */
+/* NEXT */
+nextBtn.addEventListener("click", function () {
+    introScreen.style.display = "none";
+    questionScreen.style.display = "block";
+});
+
+/* YES */
+yesBtn.addEventListener("click", function () {
+    questionScreen.style.display = "none";
+    loveMessage.style.display = "block";
+});
+
+/* NO CLICK */
 noBtn.addEventListener("click", function () {
 
-    // show message instantly
     msgBox.style.display = "block";
     msgBox.innerText = messages[count % messages.length];
     count++;
 
-    // RESET TIMER (NO STACKING)
     clearTimeout(msgTimeout);
 
     msgTimeout = setTimeout(() => {
@@ -152,30 +210,26 @@ noBtn.addEventListener("click", function () {
     moveNoButton();
 });
 
-/* =========================
-   MOVE NO BUTTON SAFELY
-========================= */
+/* SAFE MOVE (NO GOES TOO LOW FIXED) */
 function moveNoButton() {
+
+    noBtn.classList.add("floating");
+
     const btnW = noBtn.offsetWidth;
     const btnH = noBtn.offsetHeight;
 
-    const padding = 25;
+    const padding = 20;
 
     const maxX = window.innerWidth - btnW - padding;
-    const maxY = window.innerHeight - btnH - padding;
+    const maxY = window.innerHeight - btnH - 120; /* 🔥 FIX: prevents going too bottom */
 
-    let x = padding + Math.random() * maxX;
-    let y = padding + Math.random() * maxY;
+    const x = padding + Math.random() * maxX;
+    const y = padding + Math.random() * maxY;
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
-/* YES BUTTON */
-yesBtn.addEventListener("click", function () {
-    questionScreen.style.display = "none";
-    loveMessage.style.display = "block";
-});
 </script>
 
 </body>
