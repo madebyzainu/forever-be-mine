@@ -122,17 +122,22 @@ noBtn.addEventListener("click", function () {
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
 
-    const box = msgBox.getBoundingClientRect(); // 📦 message position
+    const box = msgBox.getBoundingClientRect();
+
+    // 📱 safe margins for mobile
+    const padding = 20;
+
+    const maxX = window.innerWidth - btnWidth - padding;
+    const maxY = window.innerHeight - btnHeight - padding;
 
     let x, y;
     let tries = 0;
 
     do {
-        x = Math.random() * (window.innerWidth - btnWidth);
-        y = Math.random() * (window.innerHeight - btnHeight);
+        x = padding + Math.random() * maxX;
+        y = padding + Math.random() * maxY;
         tries++;
     }
-    // ❌ avoid overlapping message box
     while (
         x < box.right &&
         x + btnWidth > box.left &&
