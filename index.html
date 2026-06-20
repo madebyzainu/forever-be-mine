@@ -103,48 +103,30 @@ const loveMessage = document.getElementById("loveMessage");
 const messages = [
   "Your heart is already saying YES 😭💗",
   "Stop lying to yourself 😏💖",
-  "The Yes button is waiting for you 🥺🫶🏻",
-  "Come on, don’t fight destiny 💫💗",
-  "Even your finger wants Yes 👀💖",
-  "Be honest… you already chose Yes 😋",
-  "That No button is just for decoration 😭😂",
-  "You’re literally one Yes away from happiness 🫶🏻💗",
-  "Pressing No is illegal in this love story 😏💖",
-  "Your future is typing… and it says YES 💌",
-  "The Yes button is blushing right now 🥺",
-  "Stop running from love 😭🫶🏻",
-  "One tap on Yes = peace restored 😌💖",
-  "Even Google suggests you press Yes 😂",
-  "Your heart already voted YES 💗"
+  "The Yes button is waiting 🥺🫶🏻",
+  "Come on don’t fight destiny 💫💗",
+  "Be honest… you want YES 😋💖",
+  "That No button is illegal 😂💗",
+  "You’re one Yes away from happiness 🫶🏻",
+  "Your future already said YES 💌",
+  "Stop running from love 😭💖"
 ];
 
 let count = 0;
 
-const msgElement = document.createElement("p");
-msgElement.style.color = "white";
-msgElement.style.fontSize = "20px";
-msgElement.style.marginBottom = "20px";
-questionScreen.insertBefore(msgElement, document.querySelector(".buttons"));
-
-function moveButton() {
-    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
-
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
-
-    noBtn.style.position = "fixed";
-    noBtn.style.left = randomX + "px";
-    noBtn.style.top = randomY + "px";
-}
-
-noBtn.addEventListener("click", () => {
-    msgElement.innerText = messages[count % messages.length];
+noBtn.addEventListener("click", function () {
+    alert(messages[count % messages.length]);
     count++;
-    moveButton();
+
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 120);
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 });
 
-yesBtn.addEventListener("click", () => {
+yesBtn.addEventListener("click", function () {
     questionScreen.style.display = "none";
     loveMessage.style.display = "block";
 });
