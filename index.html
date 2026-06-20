@@ -19,6 +19,7 @@ body {
     background: #ffe6ea;
 }
 
+/* QUESTION AREA */
 #questionScreen {
     text-align: center;
 }
@@ -29,12 +30,14 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* BUTTON LAYOUT (SIDE BY SIDE) */
 #buttonContainer {
     display: flex;
     justify-content: center;
     gap: 15px;
 }
 
+/* BUTTON STYLE */
 button {
     padding: 12px 18px;
     font-size: 18px;
@@ -48,15 +51,15 @@ button {
     color: white;
 }
 
+/* NO BUTTON FLOATING */
 #noBtn {
     background: #999;
     color: white;
     position: absolute;
-    left: 60%;
-    top: 60%;
     transition: 0.15s ease;
 }
 
+/* MESSAGE BOX */
 #msgBox {
     position: fixed;
     bottom: 20px;
@@ -73,6 +76,7 @@ button {
     font-size: 16px;
 }
 
+/* LOVE SCREEN */
 #loveMessage {
     display: none;
     text-align: center;
@@ -85,12 +89,14 @@ button {
 <body>
 
 <div id="questionScreen">
+
     <h1>Will you forever be mine Ayeshay? 👀</h1>
 
     <div id="buttonContainer">
         <button id="yesBtn">Yes ❤️‍🩹</button>
         <button id="noBtn">No 😒</button>
     </div>
+
 </div>
 
 <div id="msgBox"></div>
@@ -115,58 +121,57 @@ const messages = [
     "Just press YES ❤️‍🩹",
     "Come on… I know you want to 🫶🏻",
     "Stop resisting destiny 💫",
-    "One YES = happiness 💖",
-    "You can’t escape love 😂💗"
+    "One YES = happiness 💖"
 ];
 
 let count = 0;
+let msgTimeout = null;
 
-// initial random position so it’s not stuck
+/* INITIAL POSITION */
 window.onload = function () {
     moveNoButton();
 };
 
+/* =========================
+   NO BUTTON CLICK LOGIC
+========================= */
+noBtn.addEventListener("click", function () {
+
+    // show message instantly
+    msgBox.style.display = "block";
+    msgBox.innerText = messages[count % messages.length];
+    count++;
+
+    // RESET TIMER (NO STACKING)
+    clearTimeout(msgTimeout);
+
+    msgTimeout = setTimeout(() => {
+        msgBox.style.display = "none";
+    }, 2000);
+
+    moveNoButton();
+});
+
+/* =========================
+   MOVE NO BUTTON SAFELY
+========================= */
 function moveNoButton() {
     const btnW = noBtn.offsetWidth;
     const btnH = noBtn.offsetHeight;
-
-    const box = msgBox.getBoundingClientRect();
 
     const padding = 25;
 
     const maxX = window.innerWidth - btnW - padding;
     const maxY = window.innerHeight - btnH - padding;
 
-    let x, y;
-
-    do {
-        x = padding + Math.random() * maxX;
-        y = padding + Math.random() * maxY;
-    }
-    while (
-        x < box.right &&
-        x + btnW > box.left &&
-        y < box.bottom &&
-        y + btnH > box.top
-    );
+    let x = padding + Math.random() * maxX;
+    let y = padding + Math.random() * maxY;
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
-noBtn.addEventListener("click", function () {
-
-    msgBox.style.display = "block";
-    msgBox.innerText = messages[count % messages.length];
-    count++;
-
-    moveNoButton();
-
-    setTimeout(() => {
-        msgBox.style.display = "none";
-    }, 1800);
-});
-
+/* YES BUTTON */
 yesBtn.addEventListener("click", function () {
     questionScreen.style.display = "none";
     loveMessage.style.display = "block";
