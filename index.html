@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Someone Special ❤️</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
+
+    body{
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+        overflow:hidden;
+    }
+
+    .container{
+        text-align:center;
+    }
+
+    h1{
+        color:#fff;
+        margin-bottom:30px;
+        font-size:2rem;
+    }
+
+    .buttons{
+        position:relative;
+        width:350px;
+        height:200px;
+        margin:auto;
+    }
+
+    button{
+        padding:12px 30px;
+        font-size:18px;
+        border:none;
+        border-radius:30px;
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    #yesBtn{
+        background:#ff4081;
+        color:white;
+        margin-right:15px;
+    }
+
+    #yesBtn:hover{
+        transform:scale(1.1);
+    }
+
+    #noBtn{
+        background:white;
+        color:#333;
+        position:absolute;
+        left:200px;
+        top:0;
+    }
+
+    .message{
+        display:none;
+        text-align:center;
+        color:white;
+    }
+
+    .message h2{
+        font-size:2rem;
+        padding:20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container" id="questionScreen">
+    <h1>Will you forever be mine? 👀</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes 💗</button>
+        <button id="noBtn">No 😏</button>
+    </div>
+</div>
+
+<div class="message" id="loveMessage">
+    <h2>I knew that you love me 😋💗<br><br>
+    I love you too 😭🫶🏻</h2>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const questionScreen = document.getElementById("questionScreen");
+const loveMessage = document.getElementById("loveMessage");
+
+const messages = [
+    "Your heart is saying yes 😭💗",
+    "Try tapping Yes 😭🫶🏻",
+    "Come on, don't be shy 😋💕",
+    "The Yes button looks prettier 👀💖",
+    "I know what you're thinking 😭❤️",
+    "Stop running from your feelings 😭😂",
+    "The answer is obviously Yes 😌💗",
+    "You clicked No by mistake 😏💕",
+    "My lawyer advised me to recommend Yes 😭⚖️",
+    "Are you sure? 🥺💖",
+    "The Yes button is feeling lonely 😭💔",
+    "One tiny tap on Yes won't hurt 😋🫶🏻",
+    "You're making this difficult 😭💕",
+    "I can do this all day 😏💗",
+    "Just press Yes already 😭😭💖"
+	"Wait... was that a No? My heart skipped a beat 💔😭"
+
+"Every time you press No, a poor teddy bear cries 🧸😭"
+
+"I spent 7 business days gathering courage for this 🥺💗"
+
+"Are you sure? My playlist just turned sad 🎵💔😭"
+
+"Even the stars shipped us together ✨😭🫶🏻"
+
+"Plot twist: You're supposed to press Yes 😏💖"
+
+"My heart filed a complaint against that No 😭📄"
+
+"That No looked suspicious... try Yes instead 👀💗"
+
+"Scientists say pressing Yes increases happiness by 1000% 🧪😂"
+
+"Okay, now you're just bullying me 😭💔"
+
+"I already imagined our wedding... don't do this 😭💍"
+
+"The Yes button is blushing right now 🥺💖"
+
+"Breaking news: Local girl refuses to press Yes 😭📰"
+
+"My future self is begging you to press Yes 😭🫶🏻"
+
+"You clicked No. I took that personally 😭"
+
+"If you keep pressing No, I'll start writing poetry 😔💔"
+
+"At least take the Yes button out for dinner first 😭🍕"
+
+"GPS says your finger should move toward Yes 📍💗"
+
+"The No button asked me to tell you it's tired 😭"
+
+"Why are we pretending there are two options? 😏💖"
+
+"This rejection has been forwarded to my emotional support cat 🐱💔"
+
+"Congratulations! You've unlocked Level 7 of Denial 😭🎮"
+
+"Error 404: Feelings not found. Try pressing Yes 💗"
+
+"My lawyer says I deserve a Yes 😭⚖️"
+
+"You're making the Yes button feel insecure 🥺💔"
+
+"Okay fine... press No again if you're secretly cute 😏💖"
+
+"Wait... you came all the way here just to press No? 😭"
+
+"Legend says nobody has ever reached the end of these messages 👀✨"
+
+"At this point we're in a relationship with this button 😭🫶🏻"
+
+"Fine. I'll stop asking... after one more chance 🥺💗"
+];
+
+let count = 0;
+
+const msgElement = document.createElement("p");
+msgElement.style.color = "white";
+msgElement.style.fontSize = "20px";
+msgElement.style.marginBottom = "20px";
+questionScreen.insertBefore(msgElement, document.querySelector(".buttons"));
+
+function moveButton() {
+    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+noBtn.addEventListener("click", () => {
+    msgElement.innerText = messages[count % messages.length];
+    count++;
+    moveButton();
+});
+
+yesBtn.addEventListener("click", () => {
+    questionScreen.style.display = "none";
+    loveMessage.style.display = "block";
+});
+</script>
+
+</body>
+</html>
